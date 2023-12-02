@@ -90,6 +90,8 @@ class VerifyEmployeeAPIView(APIView):
         path = f"{BASE_DIR}%s" % store_image(request.FILES.get("image"))
 
         image = face_recognition.load_image_file(path)
+
+        # Load face locations
         locations = face_recognition.face_locations(image)
 
         # Delete trash image
