@@ -1,17 +1,41 @@
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import (
+    ListCreateAPIView,
+    RetrieveUpdateDestroyAPIView,
+    ListAPIView,
+)
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.request import Request
 from rest_framework import status
 
 from .models import Employee
-from .serializers import EmployeeSerializer
+from .serializers import EmployeeSerializer, VerifiedEmployeeSerializer
 from .validators import RegisterEmployeeValidator, VerifyEmployeeValidator
 from .utils import store_image
 from control.settings import BASE_DIR
 
 import face_recognition
 import os
+
+
+class VerifiedEmployeeAPIView(ListAPIView):
+    queryset = (
+        Employee.objects.filter(branch__isnull=False)
+        .only(
+            "id",
+            "full_name",
+            "birth_day",
+            "branch",
+            "gender",
+            "created_at",
+            "branch__id",
+            "branch__name",
+        )
+        .select_related("branch")
+        .order_by("-id")
+        .all()
+    )
+    serializer_class = VerifiedEmployeeSerializer
 
 
 class EmployeeAPIView(ListCreateAPIView):

@@ -1,6 +1,8 @@
 from datetime import date, datetime
 from rest_framework.serializers import ModelSerializer, ValidationError, DateField
+
 from .models import Employee
+from branch.models import Branch
 
 
 class EmployeeSerializer(ModelSerializer):
@@ -28,3 +30,17 @@ class EmployeeSerializer(ModelSerializer):
         validated_data["image"] = {"image": [], "path": None}
 
         return Employee.objects.create(**validated_data)
+
+
+class BranchItemSerializer(ModelSerializer):
+    class Meta:
+        model = Branch
+        fields = ["id", "name"]
+
+
+class VerifiedEmployeeSerializer(ModelSerializer):
+    branch = BranchItemSerializer()
+
+    class Meta:
+        model = Employee
+        fields = ["id", "full_name", "birth_day", "branch", "gender", "created_at"]
