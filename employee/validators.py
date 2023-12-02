@@ -2,7 +2,8 @@ from rest_framework.serializers import Serializer, IntegerField, ImageField
 
 
 class RegisterEmployeeValidator(Serializer):
-    employee = IntegerField()
+    employee_id = IntegerField()
+    branch_id = IntegerField()
     image = ImageField()
 
 

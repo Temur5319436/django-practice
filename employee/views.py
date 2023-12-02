@@ -68,10 +68,10 @@ class RegisterEmployeeAPIView(APIView):
 
         face = face_recognition.face_encodings(image)[0]
 
-        employee = Employee.objects.filter(id=request.POST.get("employee")).first()
-
-        employee.image = {"path": path, "image": face.tolist()}
-        employee.save()
+        Employee.objects.filter(id=request.POST.get("employee_id")).update(
+            image={"path": path, "image": face.tolist()},
+            branch_id=request.POST.get("branch_id"),
+        )
 
         return Response(
             {

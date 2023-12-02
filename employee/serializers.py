@@ -25,6 +25,6 @@ class EmployeeSerializer(ModelSerializer):
         return birth_day
 
     def create(self, validated_data):
-        validated_data["image"] = {"image": []}
+        validated_data["image"] = {"image": [], "path": None}
 
         return Employee.objects.create(**validated_data)
